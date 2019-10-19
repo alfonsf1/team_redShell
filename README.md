@@ -1,8 +1,12 @@
 Original Mario by team redShell  
 ===============================
-In this lab we will be creating Classic Mario with two levels.   
+In this lab we will be creating Classic Mario with;  
+1) The feel of Classic Mario from 1985    
+2) Two worlds and eight sub levels.
+3) Character animations (2-4 Frames)  
 
-Contributors of the group project:   
+Contributors of the group project:  
+---------------------------------- 
 Alfonso Figueroa - Figueroa.a@csu.fullerton.edu  
 
 
