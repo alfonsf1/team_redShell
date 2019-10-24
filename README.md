@@ -8,6 +8,8 @@ In this lab we will be creating Classic Mario with;
 Contributors of the group project:  
 ---------------------------------- 
 Alfonso Figueroa - Figueroa.a@csu.fullerton.edu  
+Frank 
+Yash    
 
 
 How to run project:
