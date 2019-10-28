@@ -7,9 +7,9 @@ In this lab we will be creating Classic Mario with;
 
 Contributors of the group project:  
 ---------------------------------- 
-Alfonso Figueroa - Figueroa.a@csu.fullerton.edu  
-Frank Mirando - mirandofrank@csu.fullerton.edu
-[Yash Bhambhani](www.github.com/yash-b) - yash_b@csu.fullerton.edu  
+1) Alfonso Figueroa - Figueroa.a@csu.fullerton.edu  
+2) Frank Mirando - mirandofrank@csu.fullerton.edu  
+3) [Yash Bhambhani](www.github.com/yash-b) - yash_b@csu.fullerton.edu  
 
 
 How to run project:
