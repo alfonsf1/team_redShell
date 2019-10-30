@@ -22,7 +22,7 @@ How to run project:
 Credit  
 ------
 Sprites: A.J Nitro for SMB NES World 1-1, 1-2, 1-3, and 1-4  
-Sound:  
+Sound:  [Yes Guy Gaming](https://www.youtube.com/channel/UCwLyidVTwiEEbzbXddTogEQ) for Original Super Mario Bros Soundtrack, and SFXs.  
   
  Pictures  
  --------  
