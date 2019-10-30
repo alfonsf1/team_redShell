@@ -18,6 +18,7 @@ class Level(tools.State):
         self.death_timer = 0
         self.castle_timer = 0
 
+        self.bg_music = pg.mixer.Sound(c.SOUND_PATH + 'mario-bg.wav')
         self.moving_score_list = []
         self.overhead_info = info.Info(self.game_info, c.LEVEL)
         self.load_map()
@@ -34,6 +35,8 @@ class Level(tools.State):
         self.setup_checkpoints()
         self.setup_flagpole()
         self.setup_sprite_groups()
+        self.bg_music.set_volume(0.5)
+        self.bg_music.play()
 
     def load_map(self):
         map_file = 'level_' + str(self.game_info[c.LEVEL_NUM]) + '.json'

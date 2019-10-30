@@ -32,9 +32,12 @@ class State():
 
 class Control():
     def __init__(self):
+        pg.mixer.pre_init(4410, 16, 2, 4096)
+        pg.init()
         self.screen = pg.display.get_surface()
         self.done = False
         self.clock = pg.time.Clock()
+        
         self.fps = 60
         self.current_time = 0.0
         self.keys = pg.key.get_pressed()
