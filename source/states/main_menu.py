@@ -15,7 +15,7 @@ class Menu(tools.State):
                    c.LEVEL_NUM: 1,
                    c.PLAYER_NAME: c.PLAYER_MARIO}
         self.startup(0.0, persist)
-    
+
     def startup(self, current_time, persist):
         self.next = c.LOAD_SCREEN
         self.persist = persist
@@ -25,7 +25,7 @@ class Menu(tools.State):
         self.setup_background()
         self.setup_player()
         self.setup_cursor()
-        
+
     def setup_background(self):
         self.background = setup.GFX['level_1']
         self.background_rect = self.background.get_rect()
@@ -91,12 +91,12 @@ class Menu(tools.State):
         if keys[pg.K_RETURN]:
             self.reset_game_info()
             self.done = True
-    
+
     def reset_game_info(self):
         self.game_info[c.COIN_TOTAL] = 0
         self.game_info[c.SCORE] = 0
         self.game_info[c.LIVES] = 3
         self.game_info[c.CURRENT_TIME] = 0.0
         self.game_info[c.LEVEL_NUM] = 1
-        
+
         self.persist = self.game_info

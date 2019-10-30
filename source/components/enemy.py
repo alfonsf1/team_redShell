@@ -42,11 +42,11 @@ def create_enemy(item, level):
             sprite.append(FireStick(center_x, center_y, dir, color,
                 radius))
     return sprite
-    
+
 class Enemy(pg.sprite.Sprite):
     def __init__(self):
         pg.sprite.Sprite.__init__(self)
-    
+
     def setup_enemy(self, x, y, direction, name, sheet, frame_rect_list,
                         in_range, range_start, range_end, isVertical=False):
         self.frames = []
@@ -54,7 +54,7 @@ class Enemy(pg.sprite.Sprite):
         self.animate_timer = 0
         self.gravity = 1.5
         self.state = c.WALK
-        
+
         self.name = name
         self.direction = direction
         self.load_frames(sheet, frame_rect_list)
@@ -68,10 +68,10 @@ class Enemy(pg.sprite.Sprite):
         self.isVertical = isVertical
         self.set_velocity()
         self.death_timer = 0
-    
+
     def load_frames(self, sheet, frame_rect_list):
         for frame_rect in frame_rect_list:
-            self.frames.append(tools.get_image(sheet, *frame_rect, 
+            self.frames.append(tools.get_image(sheet, *frame_rect,
                             c.BLACK, c.SIZE_MULTIPLIER))
 
     def set_velocity(self):
@@ -81,7 +81,7 @@ class Enemy(pg.sprite.Sprite):
         else:
             self.x_vel = ENEMY_SPEED *-1 if self.direction == c.LEFT else ENEMY_SPEED
             self.y_vel = 0
-    
+
     def update(self, game_info, level):
         self.current_time = game_info[c.CURRENT_TIME]
         self.handle_state()
@@ -102,7 +102,7 @@ class Enemy(pg.sprite.Sprite):
             self.shell_sliding()
         elif self.state == c.REVEAL:
             self.revealing()
-    
+
     def walking(self):
         if (self.current_time - self.animate_timer) > 125:
             if self.direction == c.RIGHT:
@@ -116,11 +116,11 @@ class Enemy(pg.sprite.Sprite):
                 elif self.frame_index == 1:
                     self.frame_index = 0
             self.animate_timer = self.current_time
-    
+
     def falling(self):
         if self.y_vel < 10:
             self.y_vel += self.gravity
-    
+
     def jumped_on(self):
         pass
 
@@ -149,7 +149,7 @@ class Enemy(pg.sprite.Sprite):
 
     def animation(self):
         self.image = self.frames[self.frame_index]
-    
+
     def update_position(self, level):
         self.rect.x += self.x_vel
         self.check_x_collisions(level)
@@ -163,15 +163,15 @@ class Enemy(pg.sprite.Sprite):
                 self.y_vel = -1 * ENEMY_SPEED
 
         self.rect.y += self.y_vel
-        if (self.state != c.DEATH_JUMP and 
+        if (self.state != c.DEATH_JUMP and
             self.state != c.FLY):
             self.check_y_collisions(level)
-        
+
         if self.rect.x <= 0:
             self.kill()
         elif self.rect.y > (level.viewport.bottom):
             self.kill()
-    
+
     def check_x_collisions(self, level):
         if self.in_range and not self.isVertical:
             if self.rect.x < self.range_start:
@@ -238,10 +238,10 @@ class Goomba(Enemy):
 
     def get_frame_rect(self, color):
         if color == c.COLOR_TYPE_GREEN:
-            frame_rect_list = [(0, 34, 16, 16), (30, 34, 16, 16), 
+            frame_rect_list = [(0, 34, 16, 16), (30, 34, 16, 16),
                         (61, 30, 16, 16)]
         else:
-            frame_rect_list = [(0, 4, 16, 16), (30, 4, 16, 16), 
+            frame_rect_list = [(0, 4, 16, 16), (30, 4, 16, 16),
                         (61, 0, 16, 16)]
         return frame_rect_list
 
@@ -289,11 +289,11 @@ class Koopa(Enemy):
         self.in_range = False
 
 class FlyKoopa(Enemy):
-    def __init__(self, x, y, direction, color, in_range, 
+    def __init__(self, x, y, direction, color, in_range,
                 range_start, range_end, isVertical, name=c.FLY_KOOPA):
         Enemy.__init__(self)
         frame_rect_list = self.get_frame_rect(color)
-        self.setup_enemy(x, y, direction, name, setup.GFX[c.ENEMY_SHEET], 
+        self.setup_enemy(x, y, direction, name, setup.GFX[c.ENEMY_SHEET],
                     frame_rect_list, in_range, range_start, range_end, isVertical)
         # dead jump image
         self.frames.append(pg.transform.flip(self.frames[2], False, True))
@@ -304,10 +304,10 @@ class FlyKoopa(Enemy):
 
     def get_frame_rect(self, color):
         if color == c.COLOR_TYPE_GREEN:
-            frame_rect_list = [(90, 0, 16, 24), (120, 0, 16, 24), 
+            frame_rect_list = [(90, 0, 16, 24), (120, 0, 16, 24),
                         (330, 5, 16, 15)]
         else:
-            frame_rect_list = [(90, 30, 16, 24), (120, 30, 16, 24), 
+            frame_rect_list = [(90, 30, 16, 24), (120, 30, 16, 24),
                         (330, 35, 16, 15)]
         return frame_rect_list
 
@@ -328,7 +328,7 @@ class FireKoopa(Enemy):
         Enemy.__init__(self)
         frame_rect_list = [(2, 210, 32, 32), (42, 210, 32, 32),
                             (82, 210, 32, 32), (122, 210, 32, 32)]
-        self.setup_enemy(x, y, direction, name, setup.GFX[c.ENEMY_SHEET], 
+        self.setup_enemy(x, y, direction, name, setup.GFX[c.ENEMY_SHEET],
                     frame_rect_list, in_range, range_start, range_end)
         # right walk images
         self.frames.append(pg.transform.flip(self.frames[0], True, False))
@@ -384,7 +384,7 @@ class Fire(Enemy):
         Enemy.__init__(self)
         frame_rect_list = [(101, 253, 23, 8), (131, 253, 23, 8)]
         in_range, range_start, range_end = False, 0, 0
-        self.setup_enemy(x, y, direction, name, setup.GFX[c.ENEMY_SHEET], 
+        self.setup_enemy(x, y, direction, name, setup.GFX[c.ENEMY_SHEET],
                     frame_rect_list, in_range, range_start, range_end)
         # right images
         self.frames.append(pg.transform.flip(self.frames[0], True, False))
@@ -403,18 +403,18 @@ class Fire(Enemy):
         self.kill()
 
 class Piranha(Enemy):
-    def __init__(self, x, y, direction, color, in_range, 
+    def __init__(self, x, y, direction, color, in_range,
                 range_start, range_end, name=c.PIRANHA):
         Enemy.__init__(self)
         frame_rect_list = self.get_frame_rect(color)
-        self.setup_enemy(x, y, direction, name, setup.GFX[c.ENEMY_SHEET], 
+        self.setup_enemy(x, y, direction, name, setup.GFX[c.ENEMY_SHEET],
                     frame_rect_list, in_range, range_start, range_end)
         self.state = c.REVEAL
         self.y_vel = 1
         self.wait_timer = 0
         self.group = pg.sprite.Group()
         self.group.add(self)
-        
+
     def get_frame_rect(self, color):
         if color == c.COLOR_TYPE_GREEN:
             frame_rect_list = [(390, 30, 16, 24), (420, 30, 16, 24)]
@@ -484,7 +484,7 @@ class FireStick(pg.sprite.Sprite):
 
     def load_frames(self, sheet, frame_rect_list):
         for frame_rect in frame_rect_list:
-            self.frames.append(tools.get_image(sheet, *frame_rect, 
+            self.frames.append(tools.get_image(sheet, *frame_rect,
                             c.BLACK, c.BRICK_SIZE_MULTIPLIER))
 
     def update(self, game_info, level):
@@ -503,4 +503,3 @@ class FireStick(pg.sprite.Sprite):
         radian = math.radians(self.angle)
         self.rect.x = self.center_x + math.sin(radian) * self.radius
         self.rect.y = self.center_y + math.cos(radian) * self.radius
-

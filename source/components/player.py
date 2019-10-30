@@ -5,7 +5,6 @@ from .. import setup, tools
 from .. import constants as c
 from ..components import powerup
 
-
 class Player(pg.sprite.Sprite):
     def __init__(self, player_name):
         pg.sprite.Sprite.__init__(self)
@@ -97,8 +96,8 @@ class Player(pg.sprite.Sprite):
         for name, frames in frames_list.items():
             for frame in frames:
                 image = tools.get_image(sheet, frame['x'], frame['y'],
-                                        frame['width'], frame['height'],
-                                        c.BLACK, c.SIZE_MULTIPLIER)
+                                    frame['width'], frame['height'],
+                                    c.BLACK, c.SIZE_MULTIPLIER)
                 left_image = pg.transform.flip(image, True, False)
 
                 if name == c.RIGHT_SMALL_NORMAL:
@@ -114,9 +113,9 @@ class Player(pg.sprite.Sprite):
         self.small_normal_frames = [self.right_small_normal_frames,
                                     self.left_small_normal_frames]
         self.big_normal_frames = [self.right_big_normal_frames,
-                                  self.left_big_normal_frames]
+                                    self.left_big_normal_frames]
         self.big_fire_frames = [self.right_big_fire_frames,
-                                self.left_big_fire_frames]
+                                    self.left_big_fire_frames]
 
         self.all_images = [self.right_small_normal_frames,
                            self.left_small_normal_frames,
@@ -236,7 +235,7 @@ class Player(pg.sprite.Sprite):
             self.frame_index += 1
             self.walking_timer = self.current_time
         elif (self.current_time - self.walking_timer >
-              self.calculate_animation_speed()):
+                    self.calculate_animation_speed()):
             if self.frame_index < 3:
                 self.frame_index += 1
             else:
@@ -259,6 +258,7 @@ class Player(pg.sprite.Sprite):
                     self.y_vel = self.jump_vel - .5
                 else:
                     self.y_vel = self.jump_vel
+
 
         if keys[tools.keybinding['left']]:
             self.facing_right = False
@@ -362,7 +362,7 @@ class Player(pg.sprite.Sprite):
         if (self.current_time - self.last_fireball_time) > 500:
             self.allow_fireball = False
             powerup_group.add(powerup.FireBall(self.rect.right,
-                                               self.rect.y, self.facing_right))
+                            self.rect.y, self.facing_right))
             self.last_fireball_time = self.current_time
             self.frame_index = 6
 
@@ -392,7 +392,7 @@ class Player(pg.sprite.Sprite):
         if (self.walking_timer == 0 or (self.current_time - self.walking_timer) > 200):
             self.walking_timer = self.current_time
         elif (self.current_time - self.walking_timer >
-              self.calculate_animation_speed()):
+                    self.calculate_animation_speed()):
             if self.frame_index < 3:
                 self.frame_index += 1
             else:
@@ -404,7 +404,7 @@ class Player(pg.sprite.Sprite):
         # size value 0:small, 1:middle, 2:big
         size_list = [1, 0, 1, 0, 1, 2, 0, 1, 2, 0, 2]
         frames = [(self.small_normal_frames, 0), (self.small_normal_frames, 7),
-                  (self.big_normal_frames, 0)]
+                    (self.big_normal_frames, 0)]
         if self.transition_timer == 0:
             self.big = True
             self.change_index = 0
@@ -427,7 +427,7 @@ class Player(pg.sprite.Sprite):
         # size value 0:big, 1:middle, 2:small
         size_list = [0, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2]
         frames = [(self.big_normal_frames, 4), (self.big_normal_frames, 8),
-                  (self.small_normal_frames, 8)]
+                    (self.small_normal_frames, 8)]
 
         if self.transition_timer == 0:
             self.change_index = 0
@@ -453,7 +453,7 @@ class Player(pg.sprite.Sprite):
         # size value 0:fire, 1:big green, 2:big red, 3:big black
         size_list = [0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1]
         frames = [(self.big_fire_frames, 3), (self.big_normal_frames, 3),
-                  (self.big_fire_frames, 3), (self.big_normal_frames, 3)]
+                    (self.big_fire_frames, 3), (self.big_normal_frames, 3)]
 
         if self.transition_timer == 0:
             self.change_index = 0

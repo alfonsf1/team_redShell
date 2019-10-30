@@ -17,7 +17,7 @@ class Level(tools.State):
         self.game_info[c.CURRENT_TIME] = current_time
         self.death_timer = 0
         self.castle_timer = 0
-        
+
         self.moving_score_list = []
         self.overhead_info = info.Info(self.game_info, c.LEVEL)
         self.load_map()
@@ -41,12 +41,12 @@ class Level(tools.State):
         f = open(file_path)
         self.map_data = json.load(f)
         f.close()
-        
+
     def setup_background(self):
         img_name = self.map_data[c.MAP_IMAGE]
         self.background = setup.GFX[img_name]
         self.bg_rect = self.background.get_rect()
-        self.background = pg.transform.scale(self.background, 
+        self.background = pg.transform.scale(self.background,
                                     (int(self.bg_rect.width*c.BACKGROUND_MULTIPLER),
                                     int(self.bg_rect.height*c.BACKGROUND_MULTIPLER)))
         self.bg_rect = self.background.get_rect()
@@ -65,7 +65,7 @@ class Level(tools.State):
             self.end_x = self.bg_rect.w
             self.player_x = 110
             self.player_y = c.GROUND_HEIGHT
-        
+
     def change_map(self, index, type):
         self.start_x, self.end_x, self.player_x, self.player_y = self.map_list[index]
         self.viewport.x = self.start_x
@@ -78,12 +78,12 @@ class Level(tools.State):
             self.player.rect.bottom = c.GROUND_HEIGHT
             self.player.state = c.UP_OUT_PIPE
             self.player.up_pipe_y = self.player_y
-            
+
     def setup_collide(self, name):
         group = pg.sprite.Group()
         if name in self.map_data:
             for data in self.map_data[name]:
-                group.add(stuff.Collider(data['x'], data['y'], 
+                group.add(stuff.Collider(data['x'], data['y'],
                         data['width'], data['height'], name))
         return group
 
@@ -120,7 +120,7 @@ class Level(tools.State):
         if c.MAP_BRICK in self.map_data:
             for data in self.map_data[c.MAP_BRICK]:
                 brick.create_brick(self.brick_group, data, self)
-        
+
         self.box_group = pg.sprite.Group()
         if c.MAP_BOX in self.map_data:
             for data in self.map_data[c.MAP_BOX]:
@@ -128,7 +128,7 @@ class Level(tools.State):
                     self.box_group.add(box.Box(data['x'], data['y'], data['type'], self.coin_group))
                 else:
                     self.box_group.add(box.Box(data['x'], data['y'], data['type'], self.powerup_group))
-            
+
     def setup_player(self):
         if self.player is None:
             self.player = player.Player(self.game_info[c.PLAYER_NAME])
@@ -150,7 +150,7 @@ class Level(tools.State):
                 group.add(enemy.create_enemy(item, self))
             self.enemy_group_list.append(group)
             index += 1
-            
+
     def setup_checkpoints(self):
         self.checkpoint_group = pg.sprite.Group()
         for data in self.map_data[c.MAP_CHECKPOINT]:
@@ -162,9 +162,9 @@ class Level(tools.State):
                 map_index = data[c.MAP_INDEX]
             else:
                 map_index = 0
-            self.checkpoint_group.add(stuff.Checkpoint(data['x'], data['y'], data['width'], 
+            self.checkpoint_group.add(stuff.Checkpoint(data['x'], data['y'], data['width'],
                 data['height'], data['type'], enemy_groupid, map_index))
-    
+
     def setup_flagpole(self):
         self.flagpole_group = pg.sprite.Group()
         if c.MAP_FLAGPOLE in self.map_data:
@@ -177,25 +177,25 @@ class Level(tools.State):
                 else:
                     sprite = stuff.PoleTop(data['x'], data['y'])
                 self.flagpole_group.add(sprite)
-        
-        
+
+
     def setup_sprite_groups(self):
         self.dying_group = pg.sprite.Group()
         self.enemy_group = pg.sprite.Group()
         self.shell_group = pg.sprite.Group()
-        
+
         self.ground_step_pipe_group = pg.sprite.Group(self.ground_group,
                         self.pipe_group, self.step_group, self.slider_group)
         self.player_group = pg.sprite.Group(self.player)
-        
+
     def update(self, surface, keys, current_time):
         self.game_info[c.CURRENT_TIME] = self.current_time = current_time
         self.handle_states(keys)
         self.draw(surface)
-    
+
     def handle_states(self, keys):
         self.update_all_sprites(keys)
-    
+
     def update_all_sprites(self, keys):
         if self.player.dead:
             self.player.update(keys, self.game_info, self.powerup_group)
@@ -235,10 +235,10 @@ class Level(tools.State):
             self.overhead_info.update(self.game_info, self.player)
             for score in self.moving_score_list:
                 score.update(self.moving_score_list)
-    
+
     def check_checkpoints(self):
         checkpoint = pg.sprite.spritecollideany(self.player, self.checkpoint_group)
-        
+
         if checkpoint:
             if checkpoint.type == c.CHECKPOINT_TYPE_ENEMY:
                 group = self.enemy_group_list[checkpoint.enemy_groupid]
@@ -275,7 +275,7 @@ class Level(tools.State):
 
     def update_flag_score(self):
         base_y = c.GROUND_HEIGHT - 80
-        
+
         y_score_list = [(base_y, 100), (base_y-120, 400),
                     (base_y-200, 800), (base_y-320, 2000),
                     (0, 5000)]
@@ -283,7 +283,7 @@ class Level(tools.State):
             if self.player.rect.y > y:
                 self.update_score(score, self.flag)
                 break
-        
+
     def update_player_position(self):
         if self.player.state == c.UP_OUT_PIPE:
             return
@@ -294,11 +294,11 @@ class Level(tools.State):
         elif self.player.rect.right > self.end_x:
             self.player.rect.right = self.end_x
         self.check_player_x_collisions()
-        
+
         if not self.player.dead:
             self.player.rect.y += round(self.player.y_vel)
             self.check_player_y_collisions()
-    
+
     def check_player_x_collisions(self):
         ground_step_pipe = pg.sprite.spritecollideany(self.player, self.ground_step_pipe_group)
         brick = pg.sprite.spritecollideany(self.player, self.brick_group)
@@ -369,7 +369,7 @@ class Level(tools.State):
             else:
                 self.update_score(400, shell, 0)
                 if self.player.rect.x < shell.rect.x:
-                    self.player.rect.left = shell.rect.x 
+                    self.player.rect.left = shell.rect.x
                     shell.direction = c.RIGHT
                     shell.x_vel = 10
                 else:
@@ -446,7 +446,7 @@ class Level(tools.State):
                         shell.rect.right = self.player.rect.left - 5
         self.check_is_falling(self.player)
         self.check_if_player_on_IN_pipe()
-    
+
     def prevent_collision_conflict(self, sprite1, sprite2):
         if sprite1 and sprite2:
             distance1 = abs(self.player.rect.centerx - sprite1.rect.centerx)
@@ -456,7 +456,7 @@ class Level(tools.State):
             else:
                 sprite1 = False
         return sprite1, sprite2
-        
+
     def adjust_player_for_y_collisions(self, sprite):
         if self.player.rect.top > sprite.rect.top:
             if sprite.name == c.MAP_BRICK:
@@ -477,7 +477,7 @@ class Level(tools.State):
             elif (sprite.name == c.MAP_PIPE and
                 sprite.type == c.PIPE_TYPE_HORIZONTAL):
                 return
-            
+
             self.player.y_vel = 7
             self.player.rect.top = sprite.rect.bottom
             self.player.state = c.FALL
@@ -490,7 +490,7 @@ class Level(tools.State):
                 self.player.state = c.WALK_AUTO
             else:
                 self.player.state = c.WALK
-    
+
     def check_if_enemy_on_brick_box(self, brick):
         brick.rect.y -= 5
         enemy = pg.sprite.spritecollideany(brick, self.enemy_group)
@@ -519,17 +519,17 @@ class Level(tools.State):
         sprite.rect.y += 1
         check_group = pg.sprite.Group(self.ground_step_pipe_group,
                             self.brick_group, self.box_group)
-        
+
         if pg.sprite.spritecollideany(sprite, check_group) is None:
             if (sprite.state == c.WALK_AUTO or
                 sprite.state == c.END_OF_LEVEL_FALL):
                 sprite.state = c.END_OF_LEVEL_FALL
-            elif (sprite.state != c.JUMP and 
+            elif (sprite.state != c.JUMP and
                 sprite.state != c.FLAGPOLE and
                 not self.in_frozen_state()):
                 sprite.state = c.FALL
         sprite.rect.y -= 1
-    
+
     def check_for_player_death(self):
         if (self.player.rect.y > c.SCREEN_HEIGHT or
             self.overhead_info.time <= 0):
@@ -546,7 +546,7 @@ class Level(tools.State):
                 self.player.rect.right > pipe.rect.centerx):
                 self.player.state = c.DOWN_TO_PIPE
         self.player.rect.y -= 1
-        
+
     def update_game_info(self):
         if self.player.dead:
             self.persist[c.LIVES] -= 1
@@ -564,18 +564,18 @@ class Level(tools.State):
     def update_viewport(self):
         third = self.viewport.x + self.viewport.w//3
         player_center = self.player.rect.centerx
-        
-        if (self.player.x_vel > 0 and 
+
+        if (self.player.x_vel > 0 and
             player_center >= third and
             self.viewport.right < self.end_x):
             self.viewport.x += round(self.player.x_vel)
         elif self.player.x_vel < 0 and self.viewport.x > self.start_x:
             self.viewport.x += round(self.player.x_vel)
-    
+
     def move_to_dying_group(self, group, sprite):
         group.remove(sprite)
         self.dying_group.add(sprite)
-        
+
     def update_score(self, score, sprite, coin_num=0):
         self.game_info[c.SCORE] += score
         self.game_info[c.COIN_TOTAL] += coin_num
