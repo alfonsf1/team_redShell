@@ -19,6 +19,13 @@ How to run project:
    - Go to the directory in the terminal where the game is.  
    - Type in terminal "python3 main.py" without the quotes  
   
+Game Controls:  
+--------------  
+- Start Game: Enter  
+- Run: Left or Right arrow  
+- Jump: A  
+- Shoot Fire: S  
+  
 Credit  
 ------
 Sprites: A.J Nitro for SMB NES World 1-1, 1-2, 1-3, and 1-4  
