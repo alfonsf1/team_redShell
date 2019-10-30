@@ -18,6 +18,13 @@ How to run project:
 2) To run the Mario  
    - Go to the directory in the terminal where the game is.  
    - Type in terminal "python3 main.py" without the quotes  
+
+Game Controls:
+--------------
+- Start Game: Enter
+- Run: Left or Right Arrow
+- Jump: A
+- Shoot Fire: S
   
 Credit  
 ------
